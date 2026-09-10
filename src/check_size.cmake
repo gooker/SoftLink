@@ -1,0 +1,5 @@
+file(SIZE "${EXECUTABLE}" executable_size)
+message(STATUS "Standalone executable: ${executable_size} bytes")
+if(NOT BUILD_CONFIG STREQUAL "Debug" AND executable_size GREATER_EQUAL 1000000)
+    message(FATAL_ERROR "The standalone executable must be smaller than 1,000,000 bytes.")
+endif()

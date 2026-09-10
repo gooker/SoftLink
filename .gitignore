@@ -1,0 +1,26 @@
+# Build outputs
+/build/
+/dist/
+/out/
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+*.exe
+*.dll
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.pch
+*.tlog
+
+# Local operation history
+*.jsonl
+
+# Editor and operating system files
+.vs/
+.vscode/
+*.user
+*.suo
+Thumbs.db
+Desktop.ini
