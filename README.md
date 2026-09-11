@@ -41,6 +41,33 @@ The output is `dist/SoftLink.exe`. Release builds enforce an executable
 size below 1,000,000 bytes. The executable can be distributed on its own;
 third-party notices are embedded and accessible through the system menu.
 
+## Release Automation
+
+Build the EXE, a ZIP with documentation and third-party notices, and SHA-256
+checksums with PowerShell:
+
+```powershell
+./scripts/build-release.ps1 -Generator "Visual Studio 16 2019"
+```
+
+The default generator is Visual Studio 2022. Outputs are placed in
+`dist/v0.0.1/`. When changing generators, use a fresh `build/release` directory.
+
+Push the workflow and version changes, then push a matching version tag:
+
+```powershell
+git push origin main
+git tag v0.0.1
+git push origin v0.0.1
+```
+
+GitHub Actions builds on Windows 2022 and creates a **draft release** with the
+EXE, ZIP, and checksums attached. Review the draft in Releases and publish it.
+The Actions page also supports manual builds that upload artifacts without
+creating a release. For future releases, update both the CMake project version
+and `src/SoftLink.manifest` before committing and tagging; mismatches fail the build.
+This workflow packages the application; it does not test live folder migration.
+
 ## Use
 
 1. Launch `SoftLink.exe` and accept the administrator prompt.

@@ -49,6 +49,33 @@ cmake --build build --config MinSizeRel
 超过限制时构建会报告失败。程序可以作为单个 EXE 分发，第三方许可声明已经嵌入，
 可以通过窗口系统菜单查看。
 
+## 自动构建与发布
+
+使用 PowerShell 一条命令生成 EXE、包含说明文档和第三方许可的 ZIP，以及 SHA-256 校验文件：
+
+```powershell
+./scripts/build-release.ps1 -Generator "Visual Studio 16 2019"
+```
+
+不传生成器参数时默认使用 Visual Studio 2022。产物位于 `dist/v0.0.1/`。
+切换生成器时，请使用新的 `build/release` 构建目录。
+
+将工作流和版本改动提交到 GitHub 后，推送对应版本 tag：
+
+```powershell
+git push origin main
+git tag v0.0.1
+git push origin v0.0.1
+```
+
+GitHub Actions 会在 Windows 2022 环境自动编译，并创建附带 EXE、ZIP 和校验文件的
+**Release 草稿**。在 Releases 页面检查草稿后点击发布即可。
+也可以从 Actions 页面手动执行构建；手动执行仅上传构建附件，不创建 Release。
+
+后续发布时，先同步修改 `CMakeLists.txt` 的项目版本和 `src/SoftLink.manifest` 的版本，
+再提交并创建对应 tag。版本不一致时脚本会停止，避免给错误版本打包。
+这套自动化负责构建打包，不包含实际目录迁移测试。
+
 ## 使用方法
 
 1. 启动 `SoftLink.exe`，同意管理员权限请求。
